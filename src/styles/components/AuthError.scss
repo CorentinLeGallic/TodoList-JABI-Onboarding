@@ -1,0 +1,16 @@
+.auth-error-container {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    padding: 2px 0;
+
+    .auth-error-circle {
+        color: rgb(237, 0, 0);
+    }
+
+    .auth-circle-label {
+        font-family: "Poppins", sans-serif;
+        font-size: 14px;
+        color: rgb(237, 0, 0);
+    }
+}
