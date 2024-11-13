@@ -1,21 +1,19 @@
-import React from 'react'
+import React, { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
-import { auth } from '../firebase';
-import { onAuthStateChanged } from 'firebase/auth';
-
-let user = auth.currentUser;
-onAuthStateChanged(auth, (currentUser) => {
-  console.log(currentUser)
-  user = currentUser;
-});
+import { AuthContext } from '../contexts/AuthProvider';
 
 const ProtectedRoute = ({ children }) => {
-    console.log(user)
-    if (!user) {
-        return <Navigate to="/signin" replace={true} />;
-    }
 
-    return children;
+  //  Retrieve the current user from the AuthContext
+  const { user } = useContext(AuthContext);
+
+  // If no user is currently connected, redirect the user to the SignIn page...
+  if (!user) {
+      return <Navigate to="/signin" replace={true} />;
+  }
+
+  // ...else, show the child page
+  return children;
 };
 
-export default ProtectedRoute
+export default ProtectedRoute;

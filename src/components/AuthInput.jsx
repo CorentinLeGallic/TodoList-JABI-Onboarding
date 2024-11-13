@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import { IoEyeOutline } from "react-icons/io5";
 import AuthError from './AuthError';
 
+// The authentification text / password input depending on its isSecret prop
 const AuthInput = ({ label, value, handleInputChange, placeholder="", error, isSecret=false}) => {
 
+  // Store whether the input is currently visible or not
   const [showInput, setShowInput] = useState(isSecret);
 
+  // Change the input value's visibility when the input reveal button is clicked
   const handleInputReveal = () => {
     setShowInput(!showInput)
   }

@@ -3,30 +3,25 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import './styles/index.scss';
 import Home from './pages/Home';
-import SignUp from './pages/auth/SignUp';
-import SignIn from './pages/auth/SignIn';
+import SignUp from './pages/SignUp';
+import SignIn from './pages/SignIn';
 import NoPage from './pages/NoPage';
-import Layout from './pages/auth/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
 import AuthProvider from './contexts/AuthProvider';
 
+// Create a Router
 const router = createBrowserRouter([
   {
     path: "/home",
     element: <ProtectedRoute><Home /></ProtectedRoute>,
   },
   {
-    element: <Layout />,
-    children: [
-      {
-        path: "/signup",
-        element: <SignUp />
-      },
-      {
-        path: "/signin",
-        element: <SignIn />
-      },
-    ]
+    path: "/signup",
+    element: <SignUp />
+  },
+  {
+    path: "/signin",
+    element: <SignIn />
   },
   {
     path: "*",
@@ -34,6 +29,7 @@ const router = createBrowserRouter([
   },
 ]);
 
+// Set the root element
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -41,4 +37,4 @@ root.render(
       <RouterProvider router={router} />
     </AuthProvider>
   </React.StrictMode>
-)
+);
