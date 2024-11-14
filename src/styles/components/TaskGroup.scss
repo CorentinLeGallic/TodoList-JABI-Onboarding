@@ -1,0 +1,34 @@
+.task-group {
+    margin-top: 30px;
+
+    .task-group-header {
+        padding-left: 10px;
+
+        .task-group-title {
+            font-family: "Roboto", sans-serif;
+            font-size: 26px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-all;
+            white-space: nowrap;
+        }
+
+        .task-group-description {
+            font-family: "Segoe UI", sans-serif;
+            margin: 5px 0 8px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-all;
+            white-space: nowrap;
+        }
+    }
+
+    .task-group-separator {
+        border-top: none;
+        border-bottom: 2px solid black;
+    }
+
+    .tasks-container {
+
+    }
+}

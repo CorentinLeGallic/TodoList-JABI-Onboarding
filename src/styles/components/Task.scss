@@ -1,0 +1,170 @@
+.task {
+    overflow: hidden;
+
+    .task-header {
+        display: flex;
+        align-items: center;
+        height: 50px;
+
+        .task-checkbox {
+            width: 30px;
+            height: 30px;
+            margin-left: 7px;
+            cursor: pointer;
+            flex-shrink: 0;
+            appearance: none;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            transition: .2s;
+
+            &::before {
+                content: "";
+                display: block;
+                width: 1em;
+                height: 1em;
+                clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+                transform: rotate(10deg);
+                position: relative;
+                top: 1px;
+                transition: .2s;
+            }
+
+            &:not(.completed){
+                border: 2px solid #000;
+
+                &::before {
+                    background-color: transparent;
+                }
+            }
+
+            &.completed {
+                background-color: green;
+                border: 2px solid green;
+
+                &::before {
+                    background-color: #FFF;
+                }
+            }
+        }
+
+        .task-title {
+            font-family: "Poppins", sans-serif;
+            font-size: 18px;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-all;
+            white-space: nowrap;
+            padding: 0 10px;
+        }
+
+        .task-state {
+            width: 110px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: "Poppins", sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            color: #FFF;
+            padding: 5px 10px;
+            flex-shrink: 0;
+            transition: .1s;
+
+            &:not(.completed) {
+                background-color: rgb(255, 140, 0);
+            }
+
+            &.completed {
+                background-color: green;
+            }
+        }
+
+        .task-reveal {
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            margin: 0 5px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+
+            .task-reveal-icon {
+                transition: 0.2s;
+
+                &:not(.active){
+                    transform: rotate(90deg);
+                }
+
+                &.active {
+                    transform: rotate(0);
+                }
+            }
+        }
+    }
+
+    .task-details {
+        overflow: hidden;
+        transition: 0.2s;
+        padding-left: 50px;
+
+        &:not(.visible){
+            height: 0;
+        }
+
+        &.visible {
+            height: 75px;
+        }
+
+        .task-description {
+            font-family: "Poppins";
+            font-size: 15px;
+            margin: 5px 0;
+            padding-right: 10px;
+            height: 23px;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-all;
+            white-space: nowrap;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+
+            .task-action {
+                width: 100%;
+                border-radius: 0;
+                font-family: "Poppins";
+                cursor: pointer;
+                height: 30px;
+
+                &.edit-task {
+                    border: 2px solid #000;
+                    background-color: #fff;
+                    transition: background-color 0.2s;
+
+                    &:hover {
+                        background-color: #ebebeb;
+                    }
+                }
+
+                &.delete-task {
+                    border: none;
+                    background-color: #ce181e;
+                    color: #fff;
+                    transition: background-color 0.2s;
+            
+                    &:hover {
+                      background-color: #f5494e;
+                    }
+                }
+            }
+        }
+    }
+}

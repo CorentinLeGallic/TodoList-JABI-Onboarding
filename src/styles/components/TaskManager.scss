@@ -1,0 +1,26 @@
+#home-main {
+    width: 100vw;
+    flex-grow: 1;
+    display: flex;
+
+    #home-main-section {
+        flex-grow: 1;
+
+        #home-main-container {
+            // background-color: salmon;
+            height: 100%;
+            width: 850px;
+            margin: auto;
+            padding-top: 20px;
+        }
+    }
+
+    #home-right-menu {
+        height: 100%;
+        width: 500px;
+        border-left: 2px solid black;
+        
+        display: flex;
+        flex-direction: column;
+    }
+}

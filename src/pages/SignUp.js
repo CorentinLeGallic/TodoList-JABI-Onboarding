@@ -118,7 +118,7 @@ const SignUp = () => {
           <AuthInput label="Adresse email" value={form.email} handleInputChange={(e) => setForm({...form, email: e.target.value})} error={errors.email} />
           <AuthInput label="Password" value={form.password} handleInputChange={(e) => setForm({...form, password: e.target.value})} error={errors.password} isSecret={true} />
         </div>
-        <AccentButton label="S'enregistrer" additionalStyle={{ width: '100%', marginTop: 10 }} />
+        <AccentButton label="S'enregistrer" className='auth-form-button' />
         <div className='auth-switch-container'>
           <span className='auth-switch-text'>Vous avez déjà un compte ?</span>
           <Link to="/signin" className='auth-switch-link'>Connectez-vous !</Link>

@@ -1,15 +1,15 @@
 .accent-button {
     background-color: $accent;
     color: #FFF;
-    font-family: "Poppins", sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: .4px;
-    padding: 10px 0;
     border: none;
+    padding: 10px 0;
     border-radius: 3px;
-    cursor: pointer;
+    font-size: 14px;
+    letter-spacing: .4px;
     transition: background-color .2s;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    cursor: pointer;
 
     &:hover {
         background-color: $accent2;

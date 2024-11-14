@@ -109,7 +109,7 @@ const SignIn = () => {
           <AuthInput label="Password" value={form.password} handleInputChange={(e) => setForm({...form, password: e.target.value})} error={errors.password} isSecret={true} />
         </div>
         {errors.credentials  && <AuthError label={errors.credentials} />}
-        <AccentButton label="Se connecter" additionalStyle={{ width: '100%', marginTop: errors.credentials ? 5 : 10 }} />
+        <AccentButton label="Se connecter" className='auth-form-button' />
         <div className='auth-switch-container'>
           <span className='auth-switch-text'>Vous n'avez pas encore de compte ?</span>
           <Link to="/signup" className='auth-switch-link'>Inscrivez-vous !</Link>

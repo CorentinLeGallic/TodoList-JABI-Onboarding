@@ -1,9 +1,9 @@
 import React from 'react';
 
-// The app's logo, customizable through its fontSize and additionalStyle props
-const Logo = ({ fontSize, additionalStyle={} }) => {
+// The app's logo, customizable through its fontSize, className and id props
+const Logo = ({ fontSize, className="", id="" }) => {
   return (
-    <span className='logo' style={{ fontSize: fontSize, ...additionalStyle }}>Todo List</span>
+    <span className={'logo ' + className} id={id} style={{ fontSize: fontSize }}>Todo List</span>
   )
 };
 
