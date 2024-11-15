@@ -1,19 +1,19 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import Logo from '../components/Logo';
 import AuthInput from '../components/AuthInput';
 import AccentButton from '../components/AccentButton';
 import isEmail from 'validator/lib/isEmail';
 import { Link, useNavigate } from "react-router-dom";
 import AuthError from '../components/AuthError';
-import { AuthContext } from '../contexts/AuthProvider';
+import useAuthStore from '../zustand/useAuthStore';
 
 const SignIn = () => {
 
   // Initialise the useNavigate hook to be able to navigate to other screens
   const navigate = useNavigate();
 
-  // Retrieve the loginUser function from the Authentification Context
-  const { loginUser } = useContext(AuthContext);
+  // Retrieve the loginUser function from the auth Zustand store
+  const { loginUser } = useAuthStore();
 
   // Store all the AuthInput values
   const [form, setForm] = useState({

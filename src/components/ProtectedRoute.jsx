@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { AuthContext } from '../contexts/AuthProvider';
+import useAuthStore from '../zustand/useAuthStore';
 
 const ProtectedRoute = ({ children }) => {
 
-  //  Retrieve the current user from the AuthContext
-  const { user } = useContext(AuthContext);
+  //  Retrieve the current user from the auth Zustand store
+  const { user } = useAuthStore();
 
   // If no user is currently connected, redirect the user to the SignIn page...
   if (!user) {

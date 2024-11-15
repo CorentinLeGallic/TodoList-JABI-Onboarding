@@ -47,6 +47,16 @@ const TaskManager = () => {
   ]);
 
   // TEMPORARY
+  const handleTaskGroupEdit = (e) => {
+  
+  }
+
+  // TEMPORARY
+  const handleTaskGroupDelete = (e) => {
+    
+  }
+
+  // TEMPORARY
   const handleTaskEdit = (e) => {
     
   }
@@ -71,7 +81,7 @@ const TaskManager = () => {
       <section id='home-main-section'>
         <ul id='home-main-container'>
           {categories.map(category => (
-            <TaskGroup key={category.id} title={category.name} description={category.description}>
+            <TaskGroup key={category.id} title={category.name} description={category.description} handleTaskGroupEdit={handleTaskGroupEdit} handleTaskGroupDelete={handleTaskGroupDelete}>
               {tasks.filter(task => task.category === category.name).map(task => (
                 <Task key={task.id} task={task} handleEdit={handleTaskEdit} handleDelete={handleTaskDelete} handleCheckChange={handleTaskCheckChange} />
               ))}

@@ -7,7 +7,7 @@ import SignUp from './pages/SignUp';
 import SignIn from './pages/SignIn';
 import NoPage from './pages/NoPage';
 import ProtectedRoute from './components/ProtectedRoute';
-import AuthProvider from './contexts/AuthProvider';
+import AuthInitializer from './components/AuthInitializer';
 
 // Create a Router
 const router = createBrowserRouter([
@@ -33,8 +33,8 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <AuthProvider>
+    <AuthInitializer>
       <RouterProvider router={router} />
-    </AuthProvider>
+    </AuthInitializer>
   </React.StrictMode>
 );

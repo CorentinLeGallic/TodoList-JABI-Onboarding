@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
-import { AuthContext } from '../contexts/AuthProvider';
+import React from 'react';
+import useAuthStore from '../zustand/useAuthStore';
 
 const DisconnectButton = ({ className="", id="" }) => {
 
-    // Retrieve the logOut function from the Authentification Context
-    const { logOut } = useContext(AuthContext);
+    // Retrieve the logOut function from the auth Zustand store
+    const { logOut } = useAuthStore();
 
     // Handle click on the disconnection button
     const handleDisconnection = () => {
