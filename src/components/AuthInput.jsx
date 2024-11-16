@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { IoEyeOutline } from "react-icons/io5";
-import AuthError from './AuthError';
+import InputError from './InputError';
 
 // The authentification text / password input depending on its isSecret prop
 const AuthInput = ({ label, value, handleInputChange, placeholder="", error, isSecret=false}) => {
@@ -28,7 +28,7 @@ const AuthInput = ({ label, value, handleInputChange, placeholder="", error, isS
           </button>
         )}
       </div>
-      {error && <AuthError label={error} />}
+      {error && <InputError label={error} />}
     </div>
   )
 }

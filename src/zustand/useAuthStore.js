@@ -27,8 +27,9 @@ const useAuthStore = create((set) => ({
                     username: username,
                 });
             })
-            .catch(() => {
+            .catch((error) => {
                 set({ loading: false});
+                throw error;
             });
     },
 
@@ -38,8 +39,10 @@ const useAuthStore = create((set) => ({
 
         // Send a login request using Firebase Authentification and return the associated promise
         return signInWithEmailAndPassword(auth, email, password)
-            .catch(() => {
+            .catch((error) => {
+                console.log("test1");
                 set({ loading: false});
+                throw error;
             });
     },
 
@@ -49,8 +52,9 @@ const useAuthStore = create((set) => ({
 
         // Sign out the user using Firebase Authentification and return the associated promise
         return signOut(auth)
-            .catch(() => {
+            .catch((error) => {
                 set({ loading: false});
+                throw error;
             });
     },
 

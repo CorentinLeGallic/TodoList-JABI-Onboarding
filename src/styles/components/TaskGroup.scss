@@ -4,68 +4,23 @@
     .task-group-header {
         padding-left: 10px;
         padding-top: 10px;
-        display: flex;
-        align-items: center;
-        // border-radius: 4px 4px 0 0;
-        // cursor: pointer;
-        // transition: background-color .1s;
 
-        // &:hover {
-        //     background-color: rgba(0, 0, 0, 0.048);
-        //     // background-color: #9300a123;
-        // }
-
-        .task-group-infos {
-            flex-grow: 1;
-
-            .task-group-title {
-                font-family: "Roboto", sans-serif;
-                font-size: 26px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                word-break: break-all;
-                white-space: nowrap;
-            }
-    
-            .task-group-description {
-                font-family: "Segoe UI", sans-serif;
-                padding: 5px 0 8px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                word-break: break-all;
-                white-space: nowrap;
-            }
+        .task-group-title {
+            font-family: "Roboto", sans-serif;
+            font-size: 26px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-all;
+            white-space: nowrap;
         }
 
-        .task-group-actions-container {
-            flex-shrink: 0;
-
-            .task-group-action {
-                background-color: transparent;
-                border: none;
-                cursor: pointer;
-                width: 50px;
-                height: 50px;
-                border-radius: 50%;
-                padding: 14px;
-                transition: .1s;
-           
-                &:hover {
-                    background-color: rgba(0, 0, 0, 0.025);
-                }
-
-                &.task-group-edit:hover .task-group-action-icon {
-                    fill: #bd00ce;
-                }
-
-                &.task-group-delete:hover .task-group-action-icon {
-                    fill: red;
-                }
-
-                .task-group-action-icon {
-                    transition: .1s;
-                }
-            }
+        .task-group-description {
+            font-family: "Segoe UI", sans-serif;
+            padding: 5px 0 8px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-all;
+            white-space: nowrap;
         }
     }
 

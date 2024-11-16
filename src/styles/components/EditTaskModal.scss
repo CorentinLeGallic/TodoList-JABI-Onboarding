@@ -1,0 +1,96 @@
+#edit-task-modal {
+    background-color: rgb(254, 253, 252);
+    border-radius: 8px;
+    box-shadow: 5px 7px 5px #00000050;
+    font-size: 20px;
+    width: 500px;
+
+    #edit-task-modal-title {
+        // padding-left: 20px;
+        text-align: center;
+        margin: 15px 0 10px 0;
+        font-family: "Poppins";
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 20px;
+        color: #333333;
+    }
+
+    #edit-task-modal-separator {
+        border-top: none;
+        border-bottom: 1px solid rgb(196, 196, 196);
+    }
+
+    #edit-task-modal-form {
+        padding: 0 20px;
+
+        .edit-task-form-input-container {
+            padding: 9px 0;
+
+            .edit-task-form-input {
+                padding: 9px 10px;
+                font-family: sans-serif;
+                font-size: 14px;
+
+                &.edit-task-form-text-input {
+                    width: 100%;
+                    border: 1px solid #949494;
+                    border-radius: 5px;
+                }
+
+                &.edit-task-form-textarea {
+                    width: 100%;
+                    resize: none;
+                    border: 1px solid #949494;
+                    border-radius: 5px;
+                }
+            }
+
+            .edit-task-form-select {
+                margin-left: 5px;
+                padding: 2px 5px;
+                resize: none;
+                border: 1px solid #949494;
+                border-radius: 5px;
+            }
+        }
+
+        #edit-task-form-actions {
+            margin: 15px 0;
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+
+            .edit-task-form-action {
+                color: #fff;
+                font-family: "Calibri", sans-serif;
+                font-size: 16px;
+                padding: 0 30px;
+                border: none;
+                height: 32px;
+                border-radius: 4px;
+
+                &#cancel-edit-task-form {
+                    background-color: #b12e2e;
+                    cursor: pointer;
+                    transition: background-color 0.2s;
+            
+                    &:hover {
+                      background-color: #da4146;
+                    }
+                }
+
+                &#submit-edit-task-form {
+                    background-color: #408824;
+                    cursor: pointer;
+                    transition: background-color 0.2s;
+            
+                    &:hover {
+                      background-color: #5cb438;
+                    }
+                }
+            }
+        }
+    }
+}

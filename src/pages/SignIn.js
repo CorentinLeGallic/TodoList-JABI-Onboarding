@@ -4,7 +4,7 @@ import AuthInput from '../components/AuthInput';
 import AccentButton from '../components/AccentButton';
 import isEmail from 'validator/lib/isEmail';
 import { Link, useNavigate } from "react-router-dom";
-import AuthError from '../components/AuthError';
+import AuthError from '../components/InputError';
 import useAuthStore from '../zustand/useAuthStore';
 
 const SignIn = () => {
@@ -38,6 +38,9 @@ const SignIn = () => {
       password: null,
       credentials: null, // Will store the "invalid credentials" errors
     };
+
+    // Reset the error object
+    setErrors(newErrors);
 
     // Ensure all AuthInput fields are filled
     Object.entries(form).forEach(entry =>  {

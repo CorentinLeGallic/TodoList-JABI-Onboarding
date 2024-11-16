@@ -38,6 +38,9 @@ const SignUp = () => {
       password: null,
     };
 
+    // Reset the error object
+    setErrors(newErrors);
+
     // Ensure all AuthInput fields are filled
     Object.entries(form).forEach(entry =>  {
       const [key, value] = entry;

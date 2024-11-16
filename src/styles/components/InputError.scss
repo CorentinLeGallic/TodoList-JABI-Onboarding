@@ -1,14 +1,14 @@
-.auth-error-container {
+.input-error-container {
     display: flex;
     align-items: center;
     gap: 3px;
     padding: 2px 0;
 
-    .auth-error-circle {
+    .input-error-circle {
         color: rgb(237, 0, 0);
     }
 
-    .auth-circle-label {
+    .input-error-circle-label {
         font-family: "Poppins", sans-serif;
         font-size: 14px;
         color: rgb(237, 0, 0);
