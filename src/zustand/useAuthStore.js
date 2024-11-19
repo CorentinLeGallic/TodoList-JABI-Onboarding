@@ -2,73 +2,75 @@ import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndP
 import { create } from "zustand";
 import { auth, db } from "../firebase";
 import { doc, setDoc } from "firebase/firestore";
+import { combine } from "zustand/middleware";
 
-const useAuthStore = create((set) => ({
-    // Store the currently connected user
-    user: null,
+const useAuthStore = create(
+    combine({ user: null, isLoading: false }, (set) => {
+        return {
+            // Create a new user
+            createUser: async (email, password, username) => {
+                set({ isLoading: true });
 
-    // Store whether an authentification process is ongoing
-    loading: false,
+                // Create the user using Firebase Authentification and return the associated promise
+                return createUserWithEmailAndPassword(auth, email, password)
+                    .then((userCredentials) => {
 
-    // Create a new user
-    createUser: async (email, password, username) => {
-        set({ loading: true });
+                        // If the user was created successfully, retrieve its uid...
+                        const uid = userCredentials.user.uid;
 
-        // Create the user using Firebase Authentification and return the associated promise
-        return createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredentials) => {
+                        // ...and create a new user document in the users Collection of the Firestore Database whose unique id is the uid
+                        setDoc(doc(db, 'users', uid), {
+                            isAdmin: false,
+                            username: username,
+                        });
+                    })
+                    // If an error occurs...
+                    .catch((error) => {
+                        // We set isLoading to false (because the onAuthStateChanged method won't trigger)
+                        set({ isLoading: false});
+                        throw error;
+                    });
+            },
 
-                // If the user was created successfully, retrieve its uid...
-                const uid = userCredentials.user.uid;
+            // Log in the user
+            loginUser: async (email, password) => {
+                set({ isLoading: true });
 
-                // ...and create a new user document in the users Collection of the Firestore Database whose unique id is the uid
-                setDoc(doc(db, 'users', uid), {
-                    isAdmin: false,
-                    username: username,
+                // Send a login request using Firebase Authentification and return the associated promise
+                return signInWithEmailAndPassword(auth, email, password)
+                    // If an error occurs...
+                    .catch((error) => {
+                        // We set isLoading to false (because the onAuthStateChanged method won't trigger)
+                        set({ isLoading: false});
+                        throw error;
+                    });
+            },
+            // Log out the user
+            logOut: async () => {
+                set({ isLoading: true });
+
+                // Sign out the user using Firebase Authentification and return the associated promise
+                return signOut(auth)
+                    // If an error occurs...
+                    .catch((error) => {
+                        // We set isLoading to false (because the onAuthStateChanged method won't trigger)
+                        set({ isLoading: false});
+                        throw error;
+                    });
+            },
+            initializeAuth: () => {
+                // Watch the user authentification's status and create an unsubscribe function
+                const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+                    
+                    // Update the currently connected user
+                    set({ user: currentUser, isLoading: false });                    
                 });
-            })
-            .catch((error) => {
-                set({ loading: false});
-                throw error;
-            });
-    },
 
-    // Log in the user
-    loginUser: async (email, password) => {
-        set({ loading: true });
-
-        // Send a login request using Firebase Authentification and return the associated promise
-        return signInWithEmailAndPassword(auth, email, password)
-            .catch((error) => {
-                console.log("test1");
-                set({ loading: false});
-                throw error;
-            });
-    },
-
-    // Log out the user
-    logOut: async () => {
-        set({ loading: true });
-
-        // Sign out the user using Firebase Authentification and return the associated promise
-        return signOut(auth)
-            .catch((error) => {
-                set({ loading: false});
-                throw error;
-            });
-    },
-
-    initializeAuth: () => {
-        // Watch the user authentification's status and create an unsubscribe function
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-
-            // Update the currently connected user
-            set({ user: currentUser, loading: false });
-        });
-
-        // Unsubscribe to the observer's watch on component unmount
-        return unsubscribe;
-    }
-}));
+                // Unsubscribe to the observer's watch on component unmount
+                return unsubscribe;
+            }
+        }
+    })
+);
 
 export default useAuthStore;

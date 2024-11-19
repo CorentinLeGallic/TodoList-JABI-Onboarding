@@ -1,9 +1,11 @@
 import React, { useRef } from 'react';
 import useModalStore from '../zustand/useModalStore';
 
+// A dark grey overlay shown over the screen when a modal is opened
 const ModalOverlay = ({ children }) => {
 
-    const { hideModal } = useModalStore();
+    // Retrieve the hideModal function from the modal Zustand store
+    const hideModal = useModalStore(state => state.hideModal);
 
     // Create a reference for the overlay element
     const overlay = useRef();

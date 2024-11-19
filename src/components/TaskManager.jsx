@@ -1,111 +1,104 @@
-import React, { useState } from 'react';
-// import AddCategoryForm from '../components/AddCategoryForm';
-import AddTaskForm from '../components/AddTaskForm';
-import TaskGroup from './TaskGroup';
+import React, { Fragment, useEffect, useState } from 'react';
 import Task from './Task';
 import useTasksStore from '../zustand/useTasksStore';
-import useCategoriesStore from '../zustand/useCategoriesStore';
 import useModalStore from '../zustand/useModalStore';
-import EditTaskModal from './EditTaskModal';
-import { animated } from 'react-spring';
+import { animated, useTransition } from 'react-spring';
+import AccentButton from './AccentButton';
+import AddTaskModal from './AddTaskModal';
+import TasklistHeaderElement from './TasklistHeaderElement';
+import useCategoriesStore from '../zustand/useCategoriesStore';
+import useWindowSize from '../hooks/useWindowSize';
 
 const TaskManager = () => {
 
-  // TEMPORARY
-  // const [categories, setCategories] = useState([
-  //   {
-  //     id: 0,
-  //     name: "Catégorie 1",
-  //     description: "La première catégorie"
-  //   }, {
-  //     id: 1,
-  //     name: "Catégorie 2",
-  //     description: "La deuxième catégorie"
-  //   }, {
-  //     id: 2,
-  //     name: "Catégorie 3",
-  //     description: "La troisième catégorie"
-  //   }
-  // ]);
+  // Retrieve the tasks from the tasks Zustand store
+  const tasks = useTasksStore((state) => state.tasks);
 
-  const { categories } = useCategoriesStore();
+  // Retrieve the categories from the categories Zustand store
+  const categories = useCategoriesStore(state => state.categories);
 
-  // TEMPORARY
-  // const [tasks, setTasks] = useState([
-  //   {
-  //     id: 0,
-  //     title: "Tâche 1",
-  //     description: "La première tâche",
-  //     category: "Catégorie 2",
-  //     isCompleted: false
-  //   }, {
-  //     id: 1,
-  //     title: "Tâche 2",
-  //     description: "La deuxième tâche",
-  //     category: "Catégorie 3",
-  //     isCompleted: false
-  //   }, {
-  //     id: 2,
-  //     title: "Tâche 3",
-  //     description: "La troisième tâche",
-  //     category: "Catégorie 1",
-  //     isCompleted: false
-  //   }
-  // ]);
+  // Retrieve the showModal function from the modal Zustand store
+  const showModal = useModalStore(state => state.showModal);
 
-  const { tasks, changeIsCompleted, deleteTask } = useTasksStore();
+  // State to store the current tasks sorting criteria
+  const [sortBy, setSortBy] = useState(null);
 
-  const { showModal } = useModalStore();
+  // State to store the tasks sorted depending on the sortBy value
+  const [sortedTasks, setSortedTasks] = useState(tasks);
 
-  // TEMPORARY
-  const handleTaskGroupEdit = () => {
-  
+  // State to store the current search bar value
+  const [searchValue, setSearchValue] = useState("");
+
+  // Retrieve the screen width from the useWindowSize hook
+  const { width } = useWindowSize();
+
+  // Update the sortedTasks when the sortBy value changes
+  useEffect(() => {
+    // If there's no sorting criteria, set the sortedTasks value to the tasks value and return
+    if(!sortBy) {
+      setSortedTasks(tasks);
+      return;
+    }
+
+    // Else, sort correctly the sortedTasks value
+    setSortedTasks(tasks.toSorted((a, b) => {      
+      if(a[sortBy].toLowerCase() < b[sortBy].toLowerCase()){
+          return -1;
+      } else if(a[sortBy].toLowerCase() > b[sortBy].toLowerCase()){
+          return 1;
+      } else {
+          return 0;
+      }
+    }))
+  }, [sortBy, setSortedTasks, categories, tasks])
+
+  // Set up transitions for animating task elements using react-spring
+  const tasksTransitions = useTransition(sortedTasks, {
+    from: { maxHeight: 135 },
+    enter: { maxHeight: 135 },
+    leave: { maxHeight: 0 },
+    keys: sortedTasks.map(task => task.id),
+    config: {
+        duration: 150
+    }
+  })
+
+  // Handle clicking on the add task button
+  const handleTaskAdd = () => {
+      // Create an animated version of the AddTaskModal component using the react-spring animated function
+    const AnimatedAddTaskModal = animated(AddTaskModal);
+
+    // Show the AddTask modal
+    showModal(<AnimatedAddTaskModal />)
   }
 
-  // TEMPORARY
-  const handleTaskGroupDelete = () => {
-    
-  }
-
-  // TEMPORARY
-  const handleTaskEdit = () => {
-    const AnimatedEditTaskModal = animated(EditTaskModal);
-    showModal(<AnimatedEditTaskModal />)
-  }
-
-  // TEMPORARY
-  const handleTaskDelete = (taskId) => {
-    deleteTask(taskId);
-  }
-
-  // TEMPORARY
-  const handleTaskCheckChange = (task) => {
-    changeIsCompleted(task.id, !task.isCompleted);
-    // setTasks(tasks.map(task => {
-    //   if(task.id === currentTask.id){
-    //     return {...task, isCompleted: !task.isCompleted};
-    //   }
-    //   return task;
-    // }))
-  }
+  // Create an animated version of the Task component to use with react-spring transitions
+  const AnimatedTask = animated(Task);
 
   return (
     <main id='home-main'>
-      <section id='home-main-section'>
-        <ul id='home-main-container'>
-          {categories.map(category => (
-            <TaskGroup key={category.id} title={category.name} description={category.description} handleTaskGroupEdit={handleTaskGroupEdit} handleTaskGroupDelete={handleTaskGroupDelete}>
-              {tasks.filter(task => task.categoryId === category.id).map(task => (
-                <Task key={task.id} task={task} handleEdit={handleTaskEdit} handleDelete={() => handleTaskDelete(task.id)} handleCheckChange={handleTaskCheckChange} />
-              ))}
-            </TaskGroup>
+      <div id='home-main-container'>
+        <input type="text" value={searchValue} onChange={(e) => setSearchValue(e.target.value.toLowerCase())} placeholder='Recherche une tâche...' id='search-bar' />
+        {width > 540 && (
+          <ul id='tasklist-header'>
+            <TasklistHeaderElement label="Nom de la tâche" handleClick={() => setSortBy(sortBy === "title" ? null : "title")} isActive={sortBy === "title"} id='tasklist-header-task-title' />
+            <TasklistHeaderElement label="Créateur" handleClick={() => setSortBy(sortBy === "owner" ? null : "owner")} isActive={sortBy === "owner"} id='tasklist-header-task-owner' />
+            <TasklistHeaderElement label="Catégorie" handleClick={() => setSortBy(sortBy === "categoryName" ? null : "categoryName")} isActive={sortBy === "categoryName"} id='tasklist-header-task-category' />
+          </ul>
+        )}
+        <hr id='tasklist-separator' />
+        <ul id='tasktlist'>
+          {tasksTransitions((style, task) => (
+            (task.title.toLowerCase().includes(searchValue) || task.description.toLowerCase().includes(searchValue) || task.owner.toLowerCase().includes(searchValue)) &&
+            <Fragment key={task.id}>
+                <AnimatedTask key={task.id} task={task} style={style} />
+            </Fragment>
           ))}
         </ul>
-      </section>
-      <section id='home-right-menu'>
-        {/* <AddCategoryForm categories={categories} /> */}
-        <AddTaskForm />
-      </section>
+      </div>
+      <div id='home-sticky-add-task-container'>
+        <AccentButton label="Ajouter une tâche" handleClick={handleTaskAdd} id='home-sticky-add-task-button' />
+      </div>
     </main>
   );
 }

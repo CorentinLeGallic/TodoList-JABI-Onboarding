@@ -4,7 +4,7 @@ import useAuthStore from '../zustand/useAuthStore';
 const DisconnectButton = ({ className="", id="" }) => {
 
     // Retrieve the logOut function from the auth Zustand store
-    const { logOut } = useAuthStore();
+    const logOut = useAuthStore(state => state.logOut);
 
     // Handle click on the disconnection button
     const handleDisconnection = () => {

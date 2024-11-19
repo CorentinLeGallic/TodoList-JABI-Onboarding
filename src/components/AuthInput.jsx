@@ -9,7 +9,8 @@ const AuthInput = ({ label, value, handleInputChange, placeholder="", error, isS
   const [showInput, setShowInput] = useState(isSecret);
 
   // Change the input value's visibility when the input reveal button is clicked
-  const handleInputReveal = () => {
+  const handleInputReveal = (e) => {
+    e.preventDefault();
     setShowInput(!showInput)
   }
 

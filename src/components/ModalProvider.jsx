@@ -1,11 +1,13 @@
-import React, { cloneElement, useEffect, useState } from 'react';
+import React, { cloneElement } from 'react';
 import useModalStore from '../zustand/useModalStore';
 import { useTransition } from 'react-spring';
 
 const ModalProvider = ({ children }) => {
 
-    const { modal } = useModalStore();
+    // Retrieve the current modal from the he modal Zustand store
+    const modal = useModalStore(state => state.modal);
 
+    // Set up transitions for animating modal elements using react-spring
     const modalTransition = useTransition(modal, {
         from: { opacity: 0 },
         enter: { opacity: 1 },

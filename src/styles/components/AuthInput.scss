@@ -23,6 +23,10 @@
             padding-right: 36px;
         }
 
+        .auth-input[type='password']::-ms-reveal {
+            display: none;
+        }
+
         .input-reveal-button {
             width: 36px;
             height: 36px;

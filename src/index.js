@@ -13,7 +13,7 @@ import ModalProvider from './components/ModalProvider';
 // Create a Router
 const router = createBrowserRouter([
   {
-    path: "/home",
+    path: "/",
     element: <ProtectedRoute><Home /></ProtectedRoute>,
   },
   {

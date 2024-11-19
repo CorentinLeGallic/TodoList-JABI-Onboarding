@@ -12,7 +12,7 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   // Retrieve the createUser function from the auth Zustand store
-  const { createUser } = useAuthStore();
+  const createUser = useAuthStore(state => state.createUser);
 
   // Store all the AuthInput values
   const [form, setForm] = useState({
@@ -80,8 +80,8 @@ const SignUp = () => {
     // If the user was created successfully...
     .then(() => {
       console.log("User logged in !");
-      // ...navigate to the home scren
-      navigate("../home");
+      // ...navigate to the home screen
+      navigate("../");
     })
     // Else, handle errors that occured during the account creation
     .catch((error) => {
@@ -106,7 +106,8 @@ const SignUp = () => {
       }
 
       // Add the errors to the errors object
-      setErrors(newErrors);
+      setErrors({ ...newErrors });
+
       console.error(error);
     })
   }

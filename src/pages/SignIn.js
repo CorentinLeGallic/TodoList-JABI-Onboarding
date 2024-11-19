@@ -13,7 +13,7 @@ const SignIn = () => {
   const navigate = useNavigate();
 
   // Retrieve the loginUser function from the auth Zustand store
-  const { loginUser } = useAuthStore();
+  const loginUser = useAuthStore(state => state.loginUser);
 
   // Store all the AuthInput values
   const [form, setForm] = useState({
@@ -73,8 +73,8 @@ const SignIn = () => {
       // If the user logged in successfully...
       .then(() => {
         console.log("User signed in !");
-        // ...navigate to the home scren
-        navigate("../home");
+        // ...navigate to the home screen
+        navigate("../");
       })
       // Else, handle errors that occured during the login process
       .catch(error => {
@@ -97,8 +97,7 @@ const SignIn = () => {
         }
 
         // Add the errors to the errors object
-        setErrors(newErrors);
-        console.error(error);
+        setErrors({ ...newErrors });        
     });
   }
 
@@ -111,7 +110,7 @@ const SignIn = () => {
           <AuthInput label="Adresse email" value={form.email} handleInputChange={(e) => setForm({...form, email: e.target.value})} error={errors.email} />
           <AuthInput label="Password" value={form.password} handleInputChange={(e) => setForm({...form, password: e.target.value})} error={errors.password} isSecret={true} />
         </div>
-        {errors.credentials  && <AuthError label={errors.credentials} />}
+        {errors.credentials && <AuthError label={errors.credentials} />}
         <AccentButton label="Se connecter" className='auth-form-button' />
         <div className='auth-switch-container'>
           <span className='auth-switch-text'>Vous n'avez pas encore de compte ?</span>

@@ -1,96 +1,111 @@
 import React, { useState } from 'react';
-import ModalOverlay from './ModalOverlay';
-import FormInputContainer from './FormInputContainer';
-import useCategoriesStore from '../zustand/useCategoriesStore';
+import FormModal from './FormModal';
 import useModalStore from '../zustand/useModalStore';
+import useCategoriesStore from '../zustand/useCategoriesStore';
 import useTasksStore from '../zustand/useTasksStore';
+import FormInputContainer from './FormInputContainer';
 
-const EditTaskModal = ({ style={} }) => {
+const EditTaskModal = ({ task, style={} }) => {
 
-    const { hideModal } = useModalStore();
+    // Retrieve the hideModal function from the modal Zustand store
+    const hideModal = useModalStore(state => state.hideModal);
 
-    const { categories } = useCategoriesStore();
-    const { editTask } = useTasksStore();
+    // Retrieve the categories from the categories Zustand store
+    const categories = useCategoriesStore(state => state.categories);
 
-    // Store all the new task's informations
+    // Retrieve the editTask function from the tasks Zustand store
+    const editTask = useTasksStore(state => state.editTask);
+
+    // Store all the edited task's informations
     const [form, setForm] = useState({
-        taskName: "",
-        taskDescription: "",
-        categoryId: categories.length > 0 ? categories[0].id : "Select a category"
+        taskTitle: task.title,
+        taskDescription: task.description,
+        categoryId: task.categoryId
     });
 
+    // Store all the form input values errors
     const [errors, setErrors] = useState({
-        taskName: null,
+        taskTitle: null,
         taskDescription: null,
-        categoryId: null
+        categoryId: null,
+        global: null
     });
 
-    const handleFormSubmit = (e) => {
-        e.preventDefault();
-    
+    // Handle the task editing form submit
+    const handleformSubmit = () => {
+
+        // Initialize a new empty array that will contain all the form input values errors
         const newErrors = {
-          taskName: null,
-          taskDescription: null,
-          categoryId: null
+            taskTitle: null,
+            taskDescription: null,
+            categoryId: null,
+            global: null
         };
     
         // Reset the error object
         setErrors(newErrors);
     
+        // Ensure all form input fields are filled
         Object.entries(form).forEach(entry =>  {
             const [key, value] = entry;
             if(value.length === 0){
                 console.warn(key + ' field is empty');
         
+                // Store the error in the newErrors objec
                 newErrors[key] = 'Ce champ est obligaroire.';
             }
         })
     
+        // Ensure the given category exists
         if(!categories.find(category => category.id === form.categoryId)){
             console.warn('Given category does not exist');
         
-            console.log(categories);
-            console.log(form);
-            
-            
+            // Store the error in the newErrors object
             newErrors.categoryId = "Cette catégorie n'est pas valide.";
         }
     
+        // If there is at least one error, add the new form input value errors to the errors object and return
         if(Object.values(newErrors).some(value => value)){
             console.log('Got an error before task edit attempt');
             setErrors(newErrors);
             return;
         }
+        
+        // Try to edit the task using the editTask function
+        editTask(task.id, form.taskTitle, form.taskDescription, form.categoryId)
+            // If the task was added successfully...
+            .then(() => {
+                // ...hide the modal
+                hideModal();
+            })
+            // Else, handle errors that occured during the task adding process
+            .catch(error => {
+                console.error(error);
 
-        editTask(form.taskName, form.taskDescription, form.categoryId);
+                // Store the error in the newErrors object
+                setErrors({
+                    ...errors,
+                    global: "Une erreur est survenue, veuillez réessayer ultérieurement."
+                });
+            })
     }
 
     return (
-        <ModalOverlay>
-            <div id="edit-task-modal" style={style}>
-                <h2 id="edit-task-modal-title">Modifier une tâche</h2>
-                <hr id="edit-task-modal-separator" />
-                <form action="" id="edit-task-modal-form" onSubmit={handleFormSubmit}>
-                    <FormInputContainer label='Nom' error={errors.taskName} className='edit-task-form-input-container'>
-                        <input type="text" className="edit-task-form-input edit-task-form-text-input" value={form.taskName} onChange={(e) => setForm({ ...form, taskName: e.target.value})} />
-                    </FormInputContainer>
-                    <FormInputContainer label='Description' error={errors.taskDescription} className='edit-task-form-input-container'>
-                        <textarea className="edit-task-form-input edit-task-form-textarea" value={form.taskDescription} onChange={(e) => setForm({ ...form, taskDescription: e.target.value})} rows={3} />
-                    </FormInputContainer>
-                    <FormInputContainer label='Catégorie' error={errors.categoryId} className='edit-task-form-input-container'>
-                        <select className='edit-task-form-select' value={form.categoryId} onChange={(e) => setForm({ ...form, categoryId: e.target.value})}>
-                            {categories.map(category => (
-                                <option key={category.id} value={category.id}>{category.name}</option>
-                            ))}
-                        </select>
-                    </FormInputContainer>
-                    <div id="edit-task-form-actions">
-                        <button type="button" onClick={hideModal} id="cancel-edit-task-form" className="edit-task-form-action">Annuler</button>
-                        <button type="submit" id="submit-edit-task-form" className="edit-task-form-action">Valider</button>
-                    </div>
-                </form>
-            </div>
-        </ModalOverlay>
+        <FormModal label="Modifier une tâche" handleSubmit={handleformSubmit} errors={errors} style={style}>
+            <FormInputContainer label='Nom' error={errors.taskTitle} className='task-form-input-container'>
+                <input type="text" className="task-form-input task-form-text-input" value={form.taskTitle} onChange={(e) => setForm({ ...form, taskTitle: e.target.value})} />
+            </FormInputContainer>
+            <FormInputContainer label='Description' error={errors.taskDescription} className='task-form-input-container'>
+                <textarea className="task-form-input task-form-textarea" value={form.taskDescription} onChange={(e) => setForm({ ...form, taskDescription: e.target.value})} rows={3} />
+            </FormInputContainer>
+            <FormInputContainer label='Catégorie' error={errors.categoryId} className='task-form-input-container'>
+                <select className='task-form-select' value={form.categoryId} onChange={(e) => setForm({ ...form, categoryId: e.target.value})}>
+                    {categories.map(category => (
+                        <option key={category.id} value={category.id}>{category.name + (category.description ? " - " + category.description : "")}</option>
+                    ))}
+                </select>
+            </FormInputContainer>
+        </FormModal>
     );
 }
 

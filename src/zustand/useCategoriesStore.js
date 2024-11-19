@@ -5,16 +5,19 @@ import { db } from "../firebase";
 const useCategoriesStore = create((set) => ({
     categories: [],
     initializeCategories: () => {
+        // Watch the categories collection and create an unsubscribe function
         const unsubscribe = onSnapshot(collection(db, "categories"), (snapshot) => {
+            // For each category...
             const categories = snapshot.docs.map((doc) => ({
-                id: doc.id, // Get the document ID
-                ...doc.data(), // Get the document's data
+                id: doc.id, // ...get the document ID
+                ...doc.data(), // ...get the document's data
             }));
 
+            // Update the current categories (and sort them by name)
             set({ categories: categories.toSorted((a, b) => {
-                if(a.name < b.name){
+                if(a.name.toLowerCase() < b.name.toLowerCase()){
                     return -1;
-                } else if(a.name > b.name){
+                } else if(a.name.toLowerCase() > b.name.toLowerCase()){
                     return 1;
                 } else {
                     return 0;
@@ -22,6 +25,7 @@ const useCategoriesStore = create((set) => ({
             })});
         });
 
+        // Unsubscribe to the observer's watch on component unmount
         return unsubscribe;
     }
 }));

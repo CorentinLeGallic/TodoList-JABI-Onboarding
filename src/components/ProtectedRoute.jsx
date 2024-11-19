@@ -4,8 +4,8 @@ import useAuthStore from '../zustand/useAuthStore';
 
 const ProtectedRoute = ({ children }) => {
 
-  //  Retrieve the current user from the auth Zustand store
-  const { user } = useAuthStore();
+  // Retrieve the current user from the auth Zustand store
+  const user = useAuthStore(state => state.user);
 
   // If no user is currently connected, redirect the user to the SignIn page...
   if (!user) {
