@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FormModal from './FormModal';
 import useModalStore from '../zustand/useModalStore';
 import useCategoriesStore from '../zustand/useCategoriesStore';

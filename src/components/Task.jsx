@@ -46,7 +46,7 @@ const Task = ({ task, style={} }) => {
   }
 
   // Handle clicking on the edit task button
-  const handleEdit = (task) => {
+  const handleEdit = () => {
     // Create an animated version of the EditTaskModal component using the react-spring animated function
     const AnimatedEditTaskModal = animated(EditTaskModal);
 
