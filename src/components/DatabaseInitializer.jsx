@@ -7,8 +7,11 @@ import { useShallow } from 'zustand/shallow';
 // Initialize all the Firestore Database observers that update the Zustand stores values in real time
 const DatabaseInitializer = ({ children }) => {
 
+    const user = useAuthStore(state => state.user);
+
     // Retrieve all the observers initializers functions from their Zustand stores
     const initializeAuth = useAuthStore(state => state.initializeAuth);
+    const initializeUserAccess = useAuthStore(state => state.initializeUserAccess);
     const [initializeTasks, initializeUsers] = useTasksStore(useShallow(state => [state.initializeTasks, state.initializeUsers]));
     const initializeCategories = useCategoriesStore(state => state.initializeCategories);
 
@@ -18,23 +21,37 @@ const DatabaseInitializer = ({ children }) => {
         return () => unsubscribe();
     }, [initializeAuth]);
 
+    // Watch the user's access updates
+    useEffect(() => {
+        if(user){
+            const unsubscribe = initializeUserAccess(user.uid);
+            return () => unsubscribe();
+        }
+    }, [initializeUserAccess, user]);
+
     // Watch the users updates
     useEffect(() => {
-        const unsubscribe = initializeUsers();
-        return () => unsubscribe();
-    }, [initializeUsers]);
+        if(user){
+            const unsubscribe = initializeUsers();
+            return () => unsubscribe();
+        }
+    }, [initializeUsers, user]);
 
     // Watch the categories updates
     useEffect(() => {
-        const unsubscribe = initializeCategories();
-        return () => unsubscribe();
-    }, [initializeCategories]);
+        if(user){
+            const unsubscribe = initializeCategories();
+            return () => unsubscribe();
+        }
+    }, [initializeCategories, user]);
 
     // Watch the tasks updates
     useEffect(() => {
-        const unsubscribe = initializeTasks();
-        return () => unsubscribe();
-    }, [initializeTasks]);
+        if(user){
+            const unsubscribe = initializeTasks();
+            return () => unsubscribe();
+        }
+    }, [initializeTasks, user]);
 
     return children;
 }

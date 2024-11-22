@@ -12,9 +12,9 @@ const Task = ({ task, style={} }) => {
   // State to manage the visibility of the task details
   const [detailsAreVisible, setDetailsAreVisible] = useState(false);
 
-  // Toggles the visibility of task details.
+  // Toggles the visibility of the task details
   const changeDetailsVisibility = () => {
-      setDetailsAreVisible(!detailsAreVisible);
+    setDetailsAreVisible(!detailsAreVisible);
   };
 
   // Retrieve the current user from the auth Zustand store
@@ -54,7 +54,7 @@ const Task = ({ task, style={} }) => {
     showModal(<AnimatedEditTaskModal task={task} />)
   }
 
-  // Handle change on the checkbox
+  // Handle changes on the checkbox
   const handleCheckChange = (task) => {
 
     // Try to change the completion status of the task using the changeIsCompleted function
@@ -75,10 +75,9 @@ const Task = ({ task, style={} }) => {
       <div className="task-header">
         <input className={"task-checkbox" + (task.isCompleted ? " completed" : "")} onChange={() => handleCheckChange(task)} type="checkbox" checked={task.isCompleted} />
         <h3 className="task-title">{task.title}</h3>
-        {/* <div className={"task-state " + (task.isCompleted ? "completed" : "")}>{task.isCompleted ? "Complétée" : "En cours"}</div> */}
         <div className='task-owner'>{task.owner}</div>
         <div className='task-category-container'>
-          <div className='task-category'>{categories.find(category => category.id === task.categoryId).name}</div>
+          <div className='task-category'>{categories.find(category => category.id === task.categoryId)?.name}</div>
         </div>
         <button className="task-reveal" onClick={changeDetailsVisibility}>
           <svg className={"task-reveal-icon" + (detailsAreVisible ? " active" : "")} xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">

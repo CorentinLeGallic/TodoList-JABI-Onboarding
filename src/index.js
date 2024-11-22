@@ -9,20 +9,21 @@ import NoPage from './pages/NoPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import DatabaseInitializer from './components/DatabaseInitializer';
 import ModalProvider from './components/ModalProvider';
+import Loader from './components/Loader';
 
 // Create a Router
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <ProtectedRoute><Home /></ProtectedRoute>,
+    element: <Loader><ProtectedRoute><Home /></ProtectedRoute></Loader>
   },
   {
     path: "/signup",
-    element: <SignUp />
+    element: <Loader><SignUp /></Loader>
   },
   {
     path: "/signin",
-    element: <SignIn />
+    element: <Loader><SignIn /></Loader>
   },
   {
     path: "*",

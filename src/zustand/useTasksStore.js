@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, onSnapshot, updateDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, onSnapshot, query, updateDoc, where } from "firebase/firestore";
 import { create } from "zustand";
 import { db } from "../firebase";
 import { combine } from "zustand/middleware";
@@ -21,6 +21,7 @@ const useTasksStore = create(
                 return addDoc(collection(db, "tasks"), {
                     title: title,
                     description: description,
+                    isAdminTask: false,
                     categoryId: categoryId,
                     isCompleted: false,
                     userId: useAuthStore.getState().user.uid
@@ -42,7 +43,7 @@ const useTasksStore = create(
             },
             initializeTasks: () => {
                 // Watch the tasks collection and create an unsubscribe function
-                const unsubscribe = onSnapshot(collection(db, "tasks"), (snapshot) => {
+                const unsubscribe = onSnapshot(query(collection(db, "tasks"), where("isAdminTask", "==", false)), (snapshot) => {
                     // For each task...
                     const tasks = snapshot.docs.map((doc) => ({
                             id: doc.id, // ...get the document ID

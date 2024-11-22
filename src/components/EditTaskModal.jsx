@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import FormModal from './FormModal';
 import useModalStore from '../zustand/useModalStore';
 import useCategoriesStore from '../zustand/useCategoriesStore';
@@ -16,7 +16,7 @@ const EditTaskModal = ({ task, style={} }) => {
     // Retrieve the editTask function from the tasks Zustand store
     const editTask = useTasksStore(state => state.editTask);
 
-    // Store all the edited task's informations
+    // Store all the edited task informations
     const [form, setForm] = useState({
         taskTitle: task.title,
         taskDescription: task.description,
@@ -34,7 +34,7 @@ const EditTaskModal = ({ task, style={} }) => {
     // Handle the task editing form submit
     const handleformSubmit = () => {
 
-        // Initialize a new empty array that will contain all the form input values errors
+        // Initialize a new empty object that will contain all the form input values errors
         const newErrors = {
             taskTitle: null,
             taskDescription: null,
@@ -51,7 +51,7 @@ const EditTaskModal = ({ task, style={} }) => {
             if(value.length === 0){
                 console.warn(key + ' field is empty');
         
-                // Store the error in the newErrors objec
+                // Store the error in the newErrors object
                 newErrors[key] = 'Ce champ est obligaroire.';
             }
         })
@@ -66,19 +66,19 @@ const EditTaskModal = ({ task, style={} }) => {
     
         // If there is at least one error, add the new form input value errors to the errors object and return
         if(Object.values(newErrors).some(value => value)){
-            console.log('Got an error before task edit attempt');
+            console.warn('Got an error before task edit attempt');
             setErrors(newErrors);
             return;
         }
         
         // Try to edit the task using the editTask function
         editTask(task.id, form.taskTitle, form.taskDescription, form.categoryId)
-            // If the task was added successfully...
+            // If the task was edited successfully...
             .then(() => {
                 // ...hide the modal
                 hideModal();
             })
-            // Else, handle errors that occured during the task adding process
+            // Else, handle errors that occured during the task editing process
             .catch(error => {
                 console.error(error);
 

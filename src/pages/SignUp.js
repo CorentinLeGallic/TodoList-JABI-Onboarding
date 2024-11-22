@@ -31,7 +31,7 @@ const SignUp = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    // Initialize a new empty array that will contain all the AuthInput value errors
+    // Initialize a new empty object that will contain all the AuthInput value errors
     const newErrors = {
       username: null,
       email: null,
@@ -70,17 +70,22 @@ const SignUp = () => {
 
     // If there is at least one error, add the new AuthInput value errors to the errors object and return
     if(Object.values(newErrors).some(value => value)){
-      console.log('Got an error before auth attempt');
+      console.warn('Got an error before auth attempt');
       setErrors(newErrors);
       return;
     }
 
     // Try to create a new user using the createUser function
     await createUser(form.email, form.password, form.username)
-    // If the user was created successfully...
+    // If the user was created successfully, show the Loader and redirect the user to the Home page
     .then(() => {
       console.log("User logged in !");
-      // ...navigate to the home screen
+
+      useAuthStore.setState({ isLoading: true });
+      setTimeout(() => {
+        useAuthStore.setState({ isLoading: false });
+      }, 50);
+
       navigate("../");
     })
     // Else, handle errors that occured during the account creation
@@ -88,7 +93,7 @@ const SignUp = () => {
       // If the email is invalid...
       if (error.code === 'auth/invalid-email') {
         if(!newErrors.email){
-          console.log('Email invalid from auth');
+          console.warn('Email invalid from auth');
 
           // ...store the error in the newErrors object
           newErrors.email = "L'adresse email est invalide.";
@@ -98,7 +103,7 @@ const SignUp = () => {
       // If the email is already in use...
       if (error.code === 'auth/email-already-in-use') {
         if(!newErrors.email){
-          console.log('Email already used from auth');
+          console.warn('Email already used from auth');
 
           // ...store the error in the newErrors object
           newErrors.email = 'Cette adresse email est déjà utilisée.';
@@ -107,8 +112,6 @@ const SignUp = () => {
 
       // Add the errors to the errors object
       setErrors({ ...newErrors });
-
-      console.error(error);
     })
   }
 

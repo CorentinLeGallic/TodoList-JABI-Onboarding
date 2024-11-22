@@ -7,7 +7,7 @@ const ModalOverlay = ({ children }) => {
     // Retrieve the hideModal function from the modal Zustand store
     const hideModal = useModalStore(state => state.hideModal);
 
-    // Create a reference for the overlay element
+    // Create a reference to the overlay element
     const overlay = useRef();
 
     // Close the modal if the overlay is clicked

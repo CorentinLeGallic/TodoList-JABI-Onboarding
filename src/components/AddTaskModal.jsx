@@ -34,7 +34,7 @@ const AddTaskModal = ({ style={} }) => {
   // Handle the task adding form submit
   const handleformSubmit = () => {
 
-    // Initialize a new empty array that will contain all the form input values errors
+    // Initialize a new empty object that will contain all the form input values errors
     const newErrors = {
       taskTitle: null,
       taskDescription: null,
@@ -66,7 +66,7 @@ const AddTaskModal = ({ style={} }) => {
 
     // If there is at least one error, add the new form input value errors to the errors object and return
     if(Object.values(newErrors).some(value => value)){
-      console.log('Got an error before task creation attempt');
+      console.warn('Got an error before task creation attempt');
       setErrors(newErrors);
       return;
     }
